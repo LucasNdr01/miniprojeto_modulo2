@@ -35,6 +35,53 @@ USE dw_pata_amiga;
 
 -- >>> ESCREVA AQUI: a linha -1 e o INSERT ... SELECT da dim_categoria
 
+INSERT INTO dim_categoria
+    (sk_categoria, categoria_origem, nome_categoria, grupo_categoria)
+VALUES
+    (-1, 'Nao Informado', 'Nao Informado', 'Nao Informado');
+
+INSERT INTO dim_categoria
+    (categoria_origem, nome_categoria, grupo_categoria)
+SELECT DISTINCT
+    TRIM(CategoriaProduto),
+
+    CASE
+        WHEN UPPER(TRIM(CategoriaProduto)) <> REPLACE(UPPER(TRIM(CategoriaProduto)), 'MED', '')
+            THEN 'Medicamento'
+        WHEN UPPER(TRIM(CategoriaProduto)) <> REPLACE(UPPER(TRIM(CategoriaProduto)), 'PETISC', '')
+            THEN 'Petisco'
+        WHEN UPPER(TRIM(CategoriaProduto)) <> REPLACE(UPPER(TRIM(CategoriaProduto)), 'RA', '')
+            THEN 'Racao'
+        WHEN UPPER(TRIM(CategoriaProduto)) <> REPLACE(UPPER(TRIM(CategoriaProduto)), 'HIG', '')
+            THEN 'Higiene'
+        WHEN UPPER(TRIM(CategoriaProduto)) <> REPLACE(UPPER(TRIM(CategoriaProduto)), 'BRINQ', '')
+            THEN 'Brinquedo'
+        WHEN UPPER(TRIM(CategoriaProduto)) <> REPLACE(UPPER(TRIM(CategoriaProduto)), 'ACESS', '')
+            THEN 'Acessorio'
+        WHEN UPPER(TRIM(CategoriaProduto)) <> REPLACE(UPPER(TRIM(CategoriaProduto)), 'SERV', '')
+            THEN 'Servico'
+        ELSE 'Nao Informado'
+    END,
+
+    CASE
+        WHEN UPPER(TRIM(CategoriaProduto)) <> REPLACE(UPPER(TRIM(CategoriaProduto)), 'MED', '')
+            THEN 'Saude e Higiene'
+        WHEN UPPER(TRIM(CategoriaProduto)) <> REPLACE(UPPER(TRIM(CategoriaProduto)), 'PETISC', '')
+            THEN 'Alimentacao'
+        WHEN UPPER(TRIM(CategoriaProduto)) <> REPLACE(UPPER(TRIM(CategoriaProduto)), 'RA', '')
+            THEN 'Alimentacao'
+        WHEN UPPER(TRIM(CategoriaProduto)) <> REPLACE(UPPER(TRIM(CategoriaProduto)), 'HIG', '')
+            THEN 'Saude e Higiene'
+        WHEN UPPER(TRIM(CategoriaProduto)) <> REPLACE(UPPER(TRIM(CategoriaProduto)), 'BRINQ', '')
+            THEN 'Bem-estar'
+        WHEN UPPER(TRIM(CategoriaProduto)) <> REPLACE(UPPER(TRIM(CategoriaProduto)), 'ACESS', '')
+            THEN 'Bem-estar'
+        WHEN UPPER(TRIM(CategoriaProduto)) <> REPLACE(UPPER(TRIM(CategoriaProduto)), 'SERV', '')
+            THEN 'Bem-estar'
+        ELSE 'Nao Informado'
+    END
+
+FROM stg_pedido;
 
 -- =====================================================================================
 --  DIM_PRACA  +  BRIDGE_LOJA_PRACA
@@ -46,6 +93,25 @@ USE dw_pata_amiga;
 
 -- >>> ESCREVA AQUI: a linha -1 e o INSERT ... SELECT da dim_praca
 
+INSERT INTO dim_praca
+    (sk_praca, cod_praca, nome_praca, regional, domicilios_com_pet)
+VALUES
+    (-1, '-1', 'Nao Informado', 'Nao Informado', NULL);
+    
+INSERT INTO dim_praca
+    (cod_praca, nome_praca, regional, domicilios_com_pet)
+SELECT
+    CodPraca,
+    MAX(NomePraca),
+    MAX(Regional),
+    MAX(
+        CAST(
+            REPLACE(DomiciliosComPet, '.', '')
+            AS UNSIGNED
+        )
+    )
+FROM stg_loja_praca
+GROUP BY CodPraca;
 
 -- -------------------------------------------------------------------------------------
 --  A TABELA PONTE
@@ -55,6 +121,16 @@ USE dw_pata_amiga;
 --  1,00). A ponte usa o COD DA LOJA, nao a sk_loja.
 
 -- >>> ESCREVA AQUI: o INSERT ... SELECT da bridge_loja_praca
+
+INSERT INTO bridge_loja_praca
+    (cod_loja, sk_praca, fator_publico)
+SELECT
+    slp.CodLoja,
+    dp.sk_praca,
+    CAST(slp.PercentualPublico AS DECIMAL(6,4))
+FROM stg_loja_praca slp
+JOIN dim_praca dp
+    ON slp.CodPraca = dp.cod_praca;
 
 
 -- =====================================================================================
