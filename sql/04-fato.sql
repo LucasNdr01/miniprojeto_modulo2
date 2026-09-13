@@ -88,7 +88,7 @@ SELECT
         WHEN TRIM(p.`ValorLiquidoPedido(R$)`) IN ('','-') THEN NULL
         WHEN p.`ValorLiquidoPedido(R$)` LIKE '%,%' THEN
             CAST(REPLACE(REPLACE(REPLACE(REPLACE(p.`ValorLiquidoPedido(R$)`,'R$',''),' ',''),'.',''),',','.') AS DECIMAL(15,2))
-        WHEN SUBSTRING(REPLACE(REPLACE(p.`ValorLiquidoPedido(R$)`,'R$',''),' ','') ,-2,1) = '.' THEN
+        WHEN SUBSTRING(REPLACE(REPLACE(p.`ValorLiquidoPedido(R$)`,'R$',''),' ','') ,-3,1) = '.' THEN
             CAST(REPLACE(REPLACE(p.`ValorLiquidoPedido(R$)`,'R$',''),' ','') AS DECIMAL(15,2))
         ELSE
             CAST(REPLACE(REPLACE(REPLACE(p.`ValorLiquidoPedido(R$)`,'R$',''),' ',''),'.','') AS DECIMAL(15,2))
