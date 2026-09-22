@@ -120,6 +120,32 @@ Antes de abrir uma nova loja, a análise deve ser complementada com informaçõe
 
 Dessa forma, os dados permitem identificar **onde vale a pena investigar uma oportunidade**, mas não determinam sozinhos qual é o melhor local para abrir a próxima loja.
 
+## Insights
+
+- A categoria **Ração** representa **60,01% do faturamento total**, mostrando uma forte concentração das vendas nessa categoria.
+
+- O principal gargalo operacional está entre a **emissão da Nota Fiscal e o despacho**, principalmente nas lojas pequenas, com média de **8,53 dias** nessa etapa.
+
+- As lojas pequenas apresentam o maior tempo total médio de entrega, com **15,16 dias**, enquanto as lojas médias e grandes ficam próximas de 8 dias.
+
+- O **App** possui a maior participação no faturamento entre os canais analisados, representando **30,79%** da receita.
+
+- O **Vale do Itajaí** concentra a maior parcela do faturamento distribuído entre as praças, com **35,34%**.
+
+- **Rio dos Cedros** apresentou o maior número de itens vendidos por mil habitantes, com **41,87 itens/1.000 habitantes**, sendo a primeira região a ser investigada para uma possível expansão.
+
+- **Timbó** apresentou uma demanda relativa menor, mas possui um tempo médio de entrega de apenas **7,73 dias**, tornando-se uma alternativa interessante do ponto de vista logístico.
+
+## Conclusão
+
+O projeto permitiu organizar e analisar os dados da Pata Amiga utilizando um modelo dimensional e consultas SQL voltadas para perguntas de negócio.
+
+A análise mostrou uma concentração significativa das vendas em Ração, além de identificar um gargalo importante no processo de despacho das lojas pequenas. Também foi possível observar diferenças entre os canais de venda e identificar regiões que podem ser investigadas para uma possível expansão.
+
+Os resultados, porém, possuem algumas limitações devido à existência de dados ausentes e à falta de informações como custos, margem de lucro, concorrência, renda da população, custos logísticos e histórico das faixas de franquia.
+
+Dessa forma, os resultados obtidos servem como **apoio para a análise e tomada de decisão**, mas uma decisão comercial definitiva deve considerar outras informações além dos indicadores analisados neste projeto.
+
 ## Tecnologias utilizadas
 
 - MySQL 8.0
